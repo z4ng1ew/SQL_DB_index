@@ -1,13 +1,12 @@
-DROP MATERIALIZED VIEW IF EXISTS mv_dmitriy_visits_and_eats;
+DROP INDEX IF EXISTS idx_1;
+CREATE INDEX idx_1 ON pizzeria(rating);
 
-CREATE MATERIALIZED VIEW mv_dmitriy_visits_and_eats AS
-SELECT p.name AS pizzeria_name
-FROM menu 
-INNER JOIN pizzeria p ON p.id = menu.pizzeria_id
-INNER JOIN person_visits pv ON menu.pizzeria_id = pv.pizzeria_id
-INNER JOIN person p2 ON p2.id = pv.person_id
-WHERE price < 800 
-  AND p2.name = 'Dmitriy' 
-  AND visit_date = '2022-01-08'; 
+SET enable_seqscan = OFF;
 
-SELECT * FROM mv_dmitriy_visits_and_eats;
+EXPLAIN ANALYSE
+SELECT
+    m.pizza_name AS pizza_name,
+    MAX(rating) OVER (PARTITION BY rating ORDER BY rating ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS k
+FROM menu m
+INNER JOIN pizzeria pz ON m.pizzeria_id = pz.id
+ORDER BY 1, 2;

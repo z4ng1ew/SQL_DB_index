@@ -1,10 +1,9 @@
-CREATE OR REPLACE VIEW v_generated_dates AS
-SELECT g::date AS generated_date
-FROM generate_series('2022-01-01', '2022-01-31', INTERVAL '1 day') AS g;
+DROP INDEX IF EXISTS idx_person_name;
+CREATE INDEX idx_person_name ON person(UPPER(name));
 
-SELECT * FROM v_generated_dates ORDER BY generated_date;
+SET enable_seqscan = OFF;
 
-SELECT COUNT(*) = 31 AS check,
-       MIN(generated_date) AS check1,
-       MAX(generated_date) AS check2
-FROM v_generated_dates;
+EXPLAIN ANALYSE
+SELECT *
+FROM person
+WHERE UPPER(name) = 'Kate';

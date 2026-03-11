@@ -1,21 +1,9 @@
+DROP INDEX IF EXISTS idx_menu_unique;
+CREATE UNIQUE INDEX idx_menu_unique ON menu(pizzeria_id, pizza_name);
 
-CREATE OR REPLACE VIEW v_symmetric_union AS
-(SELECT person_id
-FROM person_visits
-WHERE visit_date = '2022-01-02'
-EXCEPT
-SELECT person_id
-FROM person_visits
-WHERE visit_date = '2022-01-06')
-UNION
-(SELECT person_id
-FROM person_visits
-WHERE visit_date = '2022-01-06'
-EXCEPT
-SELECT person_id
-FROM person_visits
-WHERE visit_date = '2022-01-02');
+SET enable_seqscan = OFF;
 
-SELECT * 
-FROM v_symmetric_union 
-ORDER BY person_id;
+EXPLAIN ANALYSE
+SELECT *
+FROM menu
+WHERE pizzeria_id = 1 AND pizza_name = 'cheese pizza';

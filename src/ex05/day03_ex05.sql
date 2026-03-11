@@ -1,16 +1,11 @@
+DROP INDEX IF EXISTS idx_person_order_order_date;
+CREATE UNIQUE INDEX idx_person_order_order_date 
+    ON person_order(person_id, menu_id) 
+    WHERE order_date = '2022-01-01';
 
-CREATE OR REPLACE VIEW v_price_with_discount AS
-SELECT 
-    p.name,
-    m.pizza_name,
-    m.price,
-    CAST(m.price - m.price * 0.1 AS INTEGER) AS discount_price
+SET enable_seqscan = OFF;
+
+EXPLAIN ANALYSE
+SELECT menu_id
 FROM person_order
-JOIN person p ON p.id = person_order.person_id
-JOIN menu m ON m.id = person_order.menu_id;
-
-
-
-SELECT *
-FROM v_price_with_discount
-ORDER BY name, pizza_name;
+WHERE order_date = '2022-01-01' AND person_id = 2;
