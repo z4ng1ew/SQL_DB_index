@@ -1,7 +1,0 @@
-"QUERY PLAN"
-"Nested Loop  (cost=0.29..63.61 rows=19 width=64) (actual time=0.024..0.039 rows=19 loops=1)"
-"  ->  Index Scan using idx_menu_pizzeria_id on menu m  (cost=0.14..12.42 rows=19 width=40) (actual time=0.010..0.012 rows=19 loops=1)"
-"  ->  Index Scan using pizzeria_pkey on pizzeria pz  (cost=0.15..2.69 rows=1 width=40) (actual time=0.001..0.001 rows=1 loops=19)"
-"        Index Cond: (id = m.pizzeria_id)"
-"Planning Time: 1.849 ms"
-"Execution Time: 0.065 ms"

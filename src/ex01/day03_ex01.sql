@@ -7,3 +7,16 @@ SELECT
 FROM menu m
 INNER JOIN pizzeria pz 
     ON m.pizzeria_id = pz.id;
+
+
+
+
+
+
+
+
+
+
+
+
+
